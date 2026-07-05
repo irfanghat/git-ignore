@@ -24,10 +24,16 @@ pub fn list_templates() -> Result<Vec<String>> {
     for entry in WalkDir::new(&base_path).into_iter().filter_map(|e| e.ok()) {
         let path = entry.path();
 
-        if path.is_file() && path.extension().map_or(false, |ext| ext == "gitignore") {
+        if path.is_file()
+            && path
+                .extension()
+                .is_some_and(|ext| ext == "gitignore")
+        {
             if let Ok(rel_path) = path.strip_prefix(&base_path) {
                 let name = rel_path.to_string_lossy();
+                // -----------------------------------------------------------------------------------
                 // Strip the .gitignore extension and normalize separators for cross-platform usage
+                // -----------------------------------------------------------------------------------
                 let name = name
                     .strip_suffix(".gitignore")
                     .unwrap_or(&name)

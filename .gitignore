@@ -12,3 +12,5 @@ target
 rustc-ice-*.txt
 .env
 .vscode/
+*.pem
+.npmrc
