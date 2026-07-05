@@ -1,0 +1,227 @@
+{
+    "version": "1.0",
+    "description": "Patterns for auditing a git repository for sensitive files that should be .gitignore'd. Match against relative paths within the repo tree only.",
+    "categories": [
+        {
+            "id": "env_and_config",
+            "label": "Environment & general config files",
+            "severity": "high",
+            "reason": "Often contains plaintext secrets, API keys, or DB connection strings",
+            "patterns": [
+                ".env",
+                ".env.*",
+                "config.cfg",
+                "config.ini",
+                "settings.conf",
+                "settings.ini",
+                "application.yml",
+                "application.yaml",
+                "application.properties",
+                "local.settings.json",
+                "credentials.json",
+                "secret.json",
+                "secrets.yml",
+                "secrets.json",
+                ".secrets",
+                ".credentials"
+            ]
+        },
+        {
+            "id": "framework_specific",
+            "label": "Framework configuration files",
+            "severity": "medium",
+            "reason": "May contain database credentials or app secrets depending on framework defaults",
+            "patterns": [
+                "wp-config.php",
+                "settings.py",
+                "config/database.php",
+                "config/app.php",
+                "database.yml",
+                "config.js",
+                "default.json",
+                "production.json",
+                ".npmrc",
+                "config.php",
+                "db.php",
+                "database.php",
+                "hibernate.cfg.xml"
+            ]
+        },
+        {
+            "id": "cloud_devops",
+            "label": "Cloud & DevOps credentials",
+            "severity": "critical",
+            "reason": "Cloud provider keys, container registry auth, or infra-as-code secrets",
+            "patterns": [
+                "aws_credentials",
+                "aws_access_keys",
+                ".boto",
+                "azure_credentials.json",
+                "gcloud.json",
+                "terraform.tfvars",
+                "kubeconfig",
+                "service-account.json",
+                ".dockercfg",
+                "docker-compose.override.yml"
+            ]
+        },
+        {
+            "id": "database",
+            "label": "Database configuration & dumps",
+            "severity": "high",
+            "reason": "Connection strings or raw data dumps that may include PII/secrets",
+            "patterns": [
+                "my.cnf",
+                ".pgpass",
+                "dbconfig.yml",
+                "database.ini",
+                "*.sql",
+                "*.sqlite",
+                "*.sqlite3",
+                "*.db",
+                "*.mdb",
+                "*.accdb",
+                "db_backup.sql",
+                "*.dump",
+                "*.sql.dump",
+                "dump.rdb"
+            ]
+        },
+        {
+            "id": "api_keys_tokens",
+            "label": "API keys & tokens",
+            "severity": "critical",
+            "reason": "Direct credential material for third-party services",
+            "patterns": [
+                "apikeys.json",
+                "api-keys.txt",
+                "api_keys.txt",
+                "tokens.json",
+                "access_tokens.txt",
+                ".auth",
+                "auth.json",
+                ".vault",
+                ".jwt"
+            ]
+        },
+        {
+            "id": "keys_and_certs",
+            "label": "Private keys & certificates",
+            "severity": "critical",
+            "reason": "Cryptographic material that grants direct access if leaked",
+            "patterns": [
+                "id_rsa",
+                "id_rsa.pub",
+                "id_dsa",
+                "id_ecdsa",
+                "id_ed25519",
+                "*.pem",
+                "*.key",
+                "*.crt",
+                "*.cer",
+                "*.der",
+                "*.p12",
+                "*.pfx",
+                "*.jks",
+                "known_hosts",
+                "authorized_keys",
+                "dhparam.pem"
+            ]
+        },
+        {
+            "id": "password_manager_wallet",
+            "label": "Password manager & crypto wallet files",
+            "severity": "critical",
+            "reason": "Encrypted vaults or wallets; presence alone signals high-value target",
+            "patterns": [
+                "*.kdbx",
+                "wallet.dat",
+                "keystore.json",
+                "ethereum_keystore",
+                "1password.opvault",
+                "bitwarden.json"
+            ]
+        },
+        {
+            "id": "password_named_files",
+            "label": "Generic password/credential-named files (multi-language)",
+            "severity": "high",
+            "reason": "Common naming conventions for manually saved credential lists",
+            "patterns": [
+                "password.*",
+                "motdepasse.*",
+                "passwort.*",
+                "contraseña.*",
+                "senha.*",
+                "login.*",
+                "pass.*",
+                "pwd.*"
+            ]
+        },
+        {
+            "id": "logs_and_history",
+            "label": "Logs & shell history",
+            "severity": "medium",
+            "reason": "May leak secrets typed into commands or logged by apps",
+            "patterns": [
+                "debug.log",
+                "error.log",
+                "nohup.out",
+                ".bash_history",
+                ".zsh_history",
+                "npm-debug.log",
+                "crash.log",
+                "*.log.bak"
+            ]
+        },
+        {
+            "id": "backups_archives",
+            "label": "Backup & archive files",
+            "severity": "medium",
+            "reason": "Backups often bypass normal exclusion rules and may contain older secrets",
+            "patterns": [
+                "*.bak",
+                "*.old",
+                "*.swp",
+                "*.tmp",
+                "*.orig",
+                "*.save",
+                "*.zip",
+                "*.tar.gz",
+                "*.7z",
+                "*.rar",
+                "backup.json",
+                "backup.env"
+            ]
+        },
+        {
+            "id": "ci_cd",
+            "label": "CI/CD configuration",
+            "severity": "low",
+            "reason": "Not inherently secret but sometimes hardcodes deploy tokens; flag for review",
+            "patterns": [
+                ".gitlab-ci.yml",
+                ".travis.yml",
+                "bitbucket-pipelines.yml",
+                ".circleci/config.yml",
+                "jenkinsfile",
+                ".drone.yml",
+                "azure-pipelines.yml"
+            ]
+        },
+        {
+            "id": "network_vpn",
+            "label": "Network & VPN configuration",
+            "severity": "high",
+            "reason": "Can contain PSKs, VPN keys, or firewall rules with internal network detail",
+            "patterns": [
+                "*.ovpn",
+                "ipsec.secrets",
+                "wpa_supplicant.conf",
+                "*.psk",
+                "sshd_config",
+                "hostapd.conf"
+            ]
+        }
+    ]
+}

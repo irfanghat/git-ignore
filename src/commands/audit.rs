@@ -1,0 +1,152 @@
+use anyhow::Result;
+use std::collections::HashSet;
+use walkdir::WalkDir;
+
+use crate::git::repo::Repository;
+use crate::ignore::document::IgnoreDocument;
+use crate::sensitive::loader::load_patterns;
+
+/// Scan for issues
+pub fn run() -> Result<()> {
+    let repo = Repository::discover()?;
+    let ignore = IgnoreDocument::load(&repo.gitignore)?;
+
+    let patterns = load_patterns()?;
+
+    let mut findings = Vec::new();
+
+    for entry in WalkDir::new(&repo.root).into_iter().filter_map(|e| e.ok()) {
+        let path = entry.path();
+
+        if path.is_dir() {
+            continue;
+        }
+
+        let rel = path.strip_prefix(&repo.root)?;
+        let rel_str = rel.to_string_lossy();
+
+        for category in &patterns.categories {
+            for pattern in &category.patterns {
+                if matches_pattern(&rel_str, pattern) {
+                    // --------------------------------------------------------------------
+                    // Only report if the matching pattern isn't already in .gitignore
+                    // --------------------------------------------------------------------
+                    if !ignore.contains(pattern) {
+                        findings.push((
+                            category.severity.as_str(),
+                            category.label.as_str(),
+                            rel_str.to_string(),
+                            pattern.clone(),
+                        ));
+                    }
+                }
+            }
+        }
+    }
+
+    if findings.is_empty() {
+        println!("No sensitive files detected.");
+        return Ok(());
+    }
+
+    println!("Sensitive file audit results:\n");
+
+    for (severity, label, file, pattern) in findings {
+        println!(
+            "[{}] {} -> {} (matched: {})",
+            severity.to_uppercase(),
+            label,
+            file,
+            pattern
+        );
+    }
+
+    Ok(())
+}
+
+/// Fix detected issues
+pub fn fix() -> Result<()> {
+    let repo = Repository::discover()?;
+
+    // -----------------------------------------------------------------------------
+    // Ensure .gitignore exists; if not, create it with the default header
+    // -----------------------------------------------------------------------------
+    repo.ensure_gitignore()?;
+
+    let patterns = load_patterns()?;
+    let mut doc = IgnoreDocument::load(&repo.gitignore)?;
+
+    let mut added = Vec::new();
+    let mut detected_patterns = HashSet::new();
+
+    // -----------------------------------------------------------------------------
+    // Scan for files actually present in the repo that match sensitive patterns
+    // -----------------------------------------------------------------------------
+    for entry in WalkDir::new(&repo.root).into_iter().filter_map(|e| e.ok()) {
+        let path = entry.path();
+
+        if path.is_dir() {
+            continue;
+        }
+
+        let rel = path.strip_prefix(&repo.root)?;
+        let rel_str = rel.to_string_lossy();
+
+        for category in &patterns.categories {
+            for pattern in &category.patterns {
+                if matches_pattern(&rel_str, pattern) {
+                    detected_patterns.insert(pattern.clone());
+                }
+            }
+        }
+    }
+
+    // --------------------------------------------
+    // Sort patterns for deterministic output
+    // --------------------------------------------
+    let mut sorted_patterns: Vec<_> = detected_patterns.into_iter().collect();
+    sorted_patterns.sort();
+
+    for pattern in sorted_patterns {
+        if doc.add(pattern.clone()) {
+            added.push(pattern);
+        }
+    }
+
+    if added.is_empty() {
+        println!("No new sensitive files detected to ignore.");
+    } else {
+        doc.save(&repo.gitignore)?;
+        println!("Audit fix applied (added detected patterns to .gitignore):\n");
+
+        for p in added {
+            println!("+ {}", p);
+        }
+    }
+
+    Ok(())
+}
+
+fn matches_pattern(file: &str, pattern: &str) -> bool {
+    if pattern.contains('*') {
+        let parts: Vec<&str> = pattern.split('*').collect();
+
+        let mut start = 0;
+
+        for part in parts {
+            if part.is_empty() {
+                continue;
+            }
+
+            if let Some(pos) = file[start..].find(part) {
+                start += pos + part.len();
+            } else {
+                return false;
+            }
+        }
+
+        true
+    } else {
+        file.ends_with(pattern) || file.contains(pattern) || file == pattern
+    }
+}

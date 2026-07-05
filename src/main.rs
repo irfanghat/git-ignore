@@ -1,8 +1,12 @@
+#![allow(unused)]
+
 mod cli;
 mod commands;
 mod git;
+mod ignore;
 mod model;
-mod util;
+mod sensitive;
+mod templates;
 
 use anyhow::Result;
 use clap::Parser;
