@@ -11,3 +11,4 @@ target
 **/mutants.out*/
 rustc-ice-*.txt
 .env
+.vscode/
