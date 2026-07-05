@@ -162,3 +162,27 @@ fn matches_pattern(file: &str, pattern: &str) -> bool {
         file.ends_with(pattern) || file.contains(pattern) || file == pattern
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_matches_pattern_exact() {
+        assert!(matches_pattern(".env", ".env"));
+        assert!(matches_pattern("path/to/.env", ".env"));
+    }
+
+    #[test]
+    fn test_matches_pattern_wildcard() {
+        assert!(matches_pattern("debug.log", "*.log"));
+        assert!(matches_pattern("logs/error.log", "*.log"));
+        assert!(matches_pattern("secret_key.txt", "secret_*.txt"));
+    }
+
+    #[test]
+    fn test_no_match() {
+        assert!(!matches_pattern("main.rs", "*.log"));
+        assert!(!matches_pattern("env_backup", ".env"));
+    }
+}

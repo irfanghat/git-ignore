@@ -3,7 +3,7 @@ name = "git-ignore"
 version = "0.1.0"
 description = "A lightweight CLI for generating, analyzing, linting, organizing, and maintaining .gitignore files."
 authors = ["Irfan Ghat <irfanghat@gmail.com>"]
-edition = "2024"
+edition = "2021"
 
 [dependencies]
 anyhow = "1.0.103"
@@ -15,4 +15,4 @@ thiserror = "2.0.18"
 walkdir = "2.5.0"
 
 [dev-dependencies]
-tempfile = "3.27.0"
+tempfile = "3.12.0"
