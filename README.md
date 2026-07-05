@@ -4,14 +4,7 @@
 
 A lightweight CLI for generating, analyzing, linting, organizing, and maintaining `.gitignore` files. It combines template generation, repository analysis, duplicate detection, intelligent recommendations, and project health checks into a single tool, so your `.gitignore` can be as clean and maintainable as the rest of your codebase. I built this tool to help me manage huge git workspaces containing multiple stacks without having to think too much about sensitive files or gitignore rules.
 
-```
-   _   _ _   _       _
-  / |_(_) |_(_) __ _ _ __   ___  _ __ ___
- / _` | | __| |/ _` | '_ \ / _ \| '__/ _ \
-| (_| | | |_| | (_| | | | | (_) | | |  __/
- \__, |_|\__|_|\__, |_| |_|\___/|_|  \___|
- |___/         |___/
-```
+![](https://github.com/irfanghat/git-ignore/blob/main/docs/git_ignore_screenshot_demo.png?raw=true)
 
 [![License](https://img.shields.io/badge/license-Apache-blue.svg)](LICENSE)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/irfanghat/git-ignore/build.yaml?branch=main)](https://github.com/irfanghat/git-ignore/actions)
