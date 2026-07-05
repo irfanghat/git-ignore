@@ -14,7 +14,7 @@ A lightweight CLI for generating, analyzing, linting, organizing, and maintainin
 ```
 
 [![License](https://img.shields.io/badge/license-Apache-blue.svg)](LICENSE)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/irfanghat/git-ignore/ci.yml?branch=main)](https://github.com/irfanghat/git-ignore/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/irfanghat/git-ignore/build.yaml?branch=main)](https://github.com/irfanghat/git-ignore/actions)
 
 ---
 
