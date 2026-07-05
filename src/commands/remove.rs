@@ -1,4 +1,5 @@
 use anyhow::Result;
+use colored::Colorize;
 
 use crate::git::repo::Repository;
 use crate::ignore::document::IgnoreDocument;
@@ -10,9 +11,9 @@ pub fn run(pattern: String) -> Result<()> {
 
     if doc.remove(&pattern) {
         doc.save(&repo.gitignore)?;
-        println!("Removed '{}'", pattern);
+        println!("{} '{}'", "Removed".red().bold(), pattern);
     } else {
-        println!("'{}' was not found.", pattern);
+        println!("'{}' was not found.", pattern.yellow());
     }
 
     Ok(())

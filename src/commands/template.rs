@@ -1,4 +1,5 @@
 use anyhow::{Context, Result};
+use colored::Colorize;
 
 use crate::git::repo::Repository;
 use crate::ignore::document::IgnoreDocument;
@@ -7,9 +8,9 @@ use crate::templates::{list_templates, load_template};
 pub fn run(name: Option<String>, list: bool) -> Result<()> {
     if list {
         let templates = list_templates()?;
-        println!("Available templates:\n");
+        println!("{}", "Available templates:\n".bold().cyan());
         for t in templates {
-            println!("  {}", t);
+            println!("  {}", t.yellow());
         }
         return Ok(());
     }
@@ -34,7 +35,7 @@ pub fn run(name: Option<String>, list: bool) -> Result<()> {
 
     doc.save(&repo.gitignore)?;
 
-    println!("Applied '{}' template", name);
+    println!("{} '{}' template", "Applied".bold().green(), name.bold());
 
     Ok(())
 }

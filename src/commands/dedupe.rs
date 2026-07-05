@@ -1,4 +1,5 @@
 use anyhow::Result;
+use colored::Colorize;
 
 use crate::git::repo::Repository;
 use crate::ignore::document::IgnoreDocument;
@@ -12,7 +13,15 @@ pub fn run() -> Result<()> {
 
     doc.save(&repo.gitignore)?;
 
-    println!("Removed {} duplicate rule(s).", removed);
+    if removed > 0 {
+        println!(
+            "{} removed {} duplicate rule(s).",
+            "Deduplicated:".green().bold(),
+            removed
+        );
+    } else {
+        println!("{}", "No duplicate rules found.".dimmed());
+    }
 
     Ok(())
 }

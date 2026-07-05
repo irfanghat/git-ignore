@@ -1,6 +1,8 @@
 [package]
 name = "git-ignore"
 version = "0.1.0"
+description = "A lightweight CLI for generating, analyzing, linting, organizing, and maintaining .gitignore files."
+authors = ["Irfan Ghat <irfanghat@gmail.com>"]
 edition = "2024"
 
 [dependencies]

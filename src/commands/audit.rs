@@ -1,4 +1,5 @@
 use anyhow::Result;
+use colored::Colorize;
 use std::collections::HashSet;
 use walkdir::WalkDir;
 
@@ -45,19 +46,25 @@ pub fn run() -> Result<()> {
     }
 
     if findings.is_empty() {
-        println!("No sensitive files detected.");
+        println!("{}", "✔ No sensitive files detected.".green().bold());
         return Ok(());
     }
 
-    println!("Sensitive file audit results:\n");
+    println!("{}", "Sensitive file audit results:\n".bold().cyan());
 
     for (severity, label, file, pattern) in findings {
+        let severity_styled = match severity.to_uppercase().as_str() {
+            "HIGH" => severity.to_uppercase().red().bold(),
+            "MEDIUM" => severity.to_uppercase().yellow().bold(),
+            _ => severity.to_uppercase().blue().bold(),
+        };
+
         println!(
             "[{}] {} -> {} (matched: {})",
-            severity.to_uppercase(),
-            label,
-            file,
-            pattern
+            severity_styled,
+            label.bright_white(),
+            file.dimmed(),
+            pattern.italic()
         );
     }
 
@@ -114,13 +121,18 @@ pub fn fix() -> Result<()> {
     }
 
     if added.is_empty() {
-        println!("No new sensitive files detected to ignore.");
+        println!("{}", "No new sensitive files detected to ignore.".yellow());
     } else {
         doc.save(&repo.gitignore)?;
-        println!("Audit fix applied (added detected patterns to .gitignore):\n");
+        println!(
+            "{}",
+            "Audit fix applied (added detected patterns to .gitignore):\n"
+                .bold()
+                .green()
+        );
 
         for p in added {
-            println!("+ {}", p);
+            println!("  {} {}", "+".green().bold(), p);
         }
     }
 

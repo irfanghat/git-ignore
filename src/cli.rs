@@ -1,12 +1,31 @@
 use anyhow::Result;
+use clap::builder::styling::{AnsiColor, Effects, Styles};
 use clap::{Parser, Subcommand};
 
 use crate::commands;
 
+fn styles() -> Styles {
+    Styles::styled()
+        .header(AnsiColor::Yellow.on_default().bold())
+        .usage(AnsiColor::Yellow.on_default().bold())
+        .literal(AnsiColor::Green.on_default().bold())
+        .placeholder(AnsiColor::Cyan.on_default())
+}
+
+const BANNER: &str = r"
+   _   _ _   _       _                       
+  / |_(_) |_(_) __ _ _ __   ___  _ __ ___ 
+ / _` | | __| |/ _` | '_ \ / _ \| '__/ _ \\
+| (_| | | |_| | (_| | | | | (_) | | |  __/
+ \__, |_|\__|_|\__, |_| |_|\___/|_|  \___|
+ |___/         |___/                      
+";
+
 #[derive(Parser)]
 #[command(name = "git-ignore")]
 #[command(version)]
-#[command(about = "The maintenance toolkit for .gitignore files.")]
+#[command(about = "The maintenance toolkit for .gitignore files.", before_help = BANNER)]
+#[command(styles = styles())]
 pub struct Cli {
     #[command(subcommand)]
     command: Command,
