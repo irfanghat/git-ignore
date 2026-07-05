@@ -24,6 +24,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let manifest_dir = PathBuf::from(env::var("CARGO_MANIFEST_DIR")?);
 
     let templates_dir = manifest_dir.join("src").join("gitignore");
+    let sensitive_file_patterns = manifest_dir.join("src").join("sensitive/patterns.json");
 
     let out_dir = PathBuf::from(env::var("OUT_DIR")?);
     let dest = out_dir.join("generated_templates.rs");
@@ -54,8 +55,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     writeln!(output, "];")?;
+    writeln!(
+        output,
+        "pub static SENSITIVE_PATTERNS: &str = include_str!({:?});",
+        sensitive_file_patterns.display().to_string()
+    )?;
 
     println!("cargo:rerun-if-changed=src/gitignore");
+    println!("cargo:rerun-if-changed=src/sensitive/patterns.json");
 
     Ok(())
 }
