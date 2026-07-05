@@ -21,8 +21,6 @@ impl IgnoreDocument {
         let mut entries = Vec::new();
 
         for line in contents.lines() {
-            let line = line;
-
             if line.is_empty() {
                 entries.push(Entry::Blank);
             } else if line.starts_with('#') {
