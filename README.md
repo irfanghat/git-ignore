@@ -119,7 +119,7 @@ Options:
 | `init` | Create a new `.gitignore` in the current directory if one doesn't exist |
 | `add <pattern>` | Append a pattern to `.gitignore` |
 | `remove <pattern>` | Remove a pattern from `.gitignore` |
-| `template [name]` | Populate `.gitignore` from a known template (e.g. `rust`, `node`, `cpp`, `dotnet`) |
+| `template [name]` | Populate `.gitignore` from a known template (e.g. `Rust`, `Node`, `C++`, `Dotnet`) |
 | `template --list` | List all available templates |
 | `list` | Print all patterns currently defined in `.gitignore` |
 | `check <pattern>` | Check whether a given pattern is already covered |
