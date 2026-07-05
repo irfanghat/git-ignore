@@ -1,4 +1,4 @@
-use anyhow::{Result, bail};
+use anyhow::{bail, Result};
 use std::fs;
 use std::path::PathBuf;
 use walkdir::WalkDir;
