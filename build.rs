@@ -6,6 +6,10 @@ use std::{
 };
 
 fn visit(dir: &Path, files: &mut Vec<PathBuf>) -> std::io::Result<()> {
+    if !dir.is_dir() {
+        return Ok(());
+    }
+
     for entry in fs::read_dir(dir)? {
         let entry = entry?;
         let path = entry.path();
