@@ -25,7 +25,7 @@ Most `.gitignore` files are written once, copy-pasted from Stack Overflow, and n
 ### Via Cargo
 
 ```bash
-cargo install git-ignore
+cargo install --git https://github.com/irfanghat/git-ignore.git
 ```
 
 ### From source
