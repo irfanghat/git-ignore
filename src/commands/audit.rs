@@ -76,7 +76,7 @@ pub fn fix() -> Result<()> {
     let repo = Repository::discover()?;
 
     // -----------------------------------------------------------------------------
-    // Ensure .gitignore exists; if not, create it with the default header
+    // Ensure .gitignore exists. If not, create it with the default header
     // -----------------------------------------------------------------------------
     repo.ensure_gitignore()?;
 

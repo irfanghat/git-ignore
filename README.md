@@ -25,7 +25,7 @@ Most `.gitignore` files are written once, copy-pasted from Stack Overflow, and n
 ### Via Cargo
 
 ```bash
-cargo install git-ignore
+cargo install --git https://github.com/irfanghat/git-ignore.git
 ```
 
 ### From source
@@ -142,7 +142,7 @@ git-ignore template C++
 git-ignore template Dotnet
 ```
 
-> Don't see a template you need? [Open an issue](https://github.com/irfanghat/git-ignore/issues) or contribute one — see [Contributing](#contributing).
+> Don't see a template you need? [Open an issue](https://github.com/irfanghat/git-ignore/issues) or contribute one, see [Contributing](#contributing).
 
 ## How Auditing Works
 

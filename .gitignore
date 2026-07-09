@@ -14,3 +14,4 @@ rustc-ice-*.txt
 .vscode/
 *.pem
 .npmrc
+*.orig
